@@ -11,12 +11,25 @@ class MarvelService {
     return await res.json(); 
   }
 
-  getAllCharacters = () => {
-    return this.getResource(`${this._apiBase}characters?limit=9&offset=1244&${this._apiKey}`);
+  getAllCharacters = async () => {
+    const res = await this.getResource(`${this._apiBase}characters?limit=9&offset=1244&${this._apiKey}`);
+    return res.data.results.map(this._transformCharacter);
   }
 
-  getCharacter = (id) => {
-    return this.getResource(`${this._apiBase}characters/${id}?${this._apiKey}`);
+  getCharacter = async (id) => { //ф-я асинхронна!!! нужно добавлять async/await и это искусственно становится промисом
+    const res = await this.getResource(`${this._apiBase}characters/${id}?${this._apiKey}`); //рез-т получаем не сразу от сервера, нужно дождаться (поэтому await)
+    return this._transformCharacter(res.data.results[0]); //трансформируем полученный объект в малый
+  }
+
+  //Трансформация данных (возвращает только нужные нам данные)
+  _transformCharacter = (char) => {  //получаем большой объект
+    return {
+        name: char.name,
+        description: char.description ? `${char.description.slice(0, 210)}...` : 'There is no description for this character',
+        homepage: char.urls[0].url,
+        wiki: char.urls[1].url,                   
+        thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension, 
+    } //возвращаем малый
   }
 }
 
