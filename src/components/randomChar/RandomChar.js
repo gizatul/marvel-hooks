@@ -26,6 +26,12 @@ class RandomChar extends Component {
         }) // и в state записываем char
     }
 
+    onCharLoading = () => {
+        this.setState({
+            loading: true,
+        })
+    }
+
     onError = () => {
         this.setState({
             loading: false,
@@ -36,16 +42,11 @@ class RandomChar extends Component {
 
     updateChar = () => {
         let id = Math.floor((Math.random() * (1011400 - 1011000 + 1)) + 1011000);
+        this.onCharLoading(); //запускаем спиннер перед тем как пойдет запрос ниже
         this.marvelService
             .getCharacter(id) //возвращается малый объект
             .then(this.onCharLoaded) //загрузка завершена  - запуск функции onCharLoaded
             .catch(this.onError) //ошибка - запуск ф-ции onError
-            .finally(
-                this.setState({
-                    loading: true,
-                    error: false,
-                })
-            )
     }
 
     render() {
@@ -77,6 +78,8 @@ class RandomChar extends Component {
         )
     }
 }
+
+
 
 const View = ({char}) => { //рендерящий компонент
     const {thumbnail, description, name, homepage, wiki} = char;

@@ -24,11 +24,13 @@ class MarvelService {
   //Трансформация данных (возвращает только нужные нам данные)
   _transformCharacter = (char) => {  //получаем большой объект
     return {
+        id: char.id,
         name: char.name,
-        description: char.description ? `${char.description.slice(0, 210)}...` : 'There is no description for this character',
+        description: char.description.length > 180  ? `${char.description.slice(0, 180)}...` : char.description.length <= 0 ? 'There is not description' : char.description,
         homepage: char.urls[0].url,
-        wiki: char.urls[1].url,                   
-        thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension, 
+        wiki: char.urls[1].url,
+        thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
+        comics: char.comics.items,
     } //возвращаем малый
   }
 }
