@@ -5,7 +5,7 @@ const ErrorMessage = () => {
   return (
     <div className='error'>
       <img  src={error} alt="error" />
-      <div className='error__text'>Character not found. Please try again</div>
+      <div className='error__text'>Something  went wrong</div>
     </div>
   )
 }
