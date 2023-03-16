@@ -50,7 +50,7 @@ class RandomChar extends Component {
     }
 
     render() {
-        const {char, loading, error} = this.state; //деструткуризация из state
+        const {char, loading, error} = this.state; //деструктуризация из state
         //Создание переменных для условного рендеринга
         const errorMessage = error ? <ErrorMessage/> : null; //если error - true то рендерим ErrorMessage
         const spinner = loading ? <Spinner/> : null; //если loading - true то рендерим Spinner
@@ -84,7 +84,7 @@ class RandomChar extends Component {
 const View = ({char}) => { //рендерящий компонент
     const {thumbnail, description, name, homepage, wiki} = char;
     let objectFit;
-    thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? objectFit = 'contain' : objectFit = 'cover';
+    thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? objectFit = 'contain' : objectFit = 'unset';
 
     return (
         <div className="randomchar__block">

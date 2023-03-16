@@ -4,7 +4,7 @@ import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
 import Skeleton from '../skeleton/Skeleton';
-
+import PropTypes from 'prop-types';
 class CharInfo extends Component {
     state = {
         char: null,
@@ -83,7 +83,7 @@ class CharInfo extends Component {
 const Info = ({char}) => {
     const {thumbnail, name, description, wiki, homepage, comics} = char;
     let objectFit;
-    thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? objectFit = 'contain' : objectFit = 'cover';
+    thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? objectFit = 'contain' : objectFit = 'unset';
 
     return(
         <>
@@ -117,6 +117,10 @@ const Info = ({char}) => {
             </ul>
         </>
     )
+}
+
+CharInfo.propTypes = {
+    charId: PropTypes.number, //присвоение типа число 
 }
 
 export default CharInfo;
