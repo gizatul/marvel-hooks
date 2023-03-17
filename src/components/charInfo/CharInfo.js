@@ -5,6 +5,7 @@ import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
 import Skeleton from '../skeleton/Skeleton';
 import PropTypes from 'prop-types';
+
 class CharInfo extends Component {
     state = {
         char: null,
@@ -18,13 +19,11 @@ class CharInfo extends Component {
         this.updateChar();
     }
 
-    componentDidUpdate(prevProps) { //как аргументы получает предыдущее состояние и предыдущие пропсы
+    componentDidUpdate(prevProps) { 
         if (this.props.charId !== prevProps.charId) {
             this.updateChar();
         }
     }
-
-
 
     onCharLoading = () => {
         this.setState({
@@ -62,11 +61,11 @@ class CharInfo extends Component {
     }
 
     render() {
-        const {char, loading, error} = this.state; //деструктуризация из state
-        //Создание переменных для условного рендеринга
+        const {char, loading, error} = this.state; 
+        
         const skeleton = char || loading || error ? null : <Skeleton/>;
-        const errorMessage = error ? <ErrorMessage/> : null; //если error - true то рендерим ErrorMessage
-        const spinner = loading ? <Spinner/> : null; //если loading - true то рендерим Spinner
+        const errorMessage = error ? <ErrorMessage/> : null; 
+        const spinner = loading ? <Spinner/> : null; 
         const content = !(loading || error || !char) ? <Info char={char}/> : null;
         
         return (
@@ -84,7 +83,7 @@ const Info = ({char}) => {
     const {thumbnail, name, description, wiki, homepage, comics} = char;
     let objectFit;
     thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? objectFit = 'contain' : objectFit = 'unset';
-
+    
     return(
         <>
             <div className="char__basics">
@@ -106,7 +105,7 @@ const Info = ({char}) => {
             </div>
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
-                {comics.length > 0 ? null : 'Not found'} {/*если есть комиксы то ничего не происходит, иначе выводится надпись */}
+                {comics.length > 0 ? null : 'Not found'}
                 {comics.slice(0, 10).map((item, i) => {
                     return (
                         <li key={i} className="char__comics-item">
@@ -120,7 +119,7 @@ const Info = ({char}) => {
 }
 
 CharInfo.propTypes = {
-    charId: PropTypes.number, //присвоение типа число 
+    charId: PropTypes.number, 
 }
 
 export default CharInfo;

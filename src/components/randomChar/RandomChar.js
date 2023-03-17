@@ -7,23 +7,23 @@ import ErrorMessage from '../errorMessage/errorMessage';
 
 class RandomChar extends Component {
 
-    state = { //данные берем из api marvel //в state параметры загрузки и ошибки по умолчанию
-        char: {}, //характеристика персонажа
+    state = { 
+        char: {}, 
         loading: true,
         error: false,
     }
 
-    marvelService = new MarvelService(); //создаем новое св-во marvelService внутри класса RandomChar 
+    marvelService = new MarvelService(); 
 
     componentDidMount() {
         this.updateChar(); 
     }
 
-    onCharLoaded = (char) => { //наш персонаж загрузился
+    onCharLoaded = (char) => { 
         this.setState({
             char: char, 
-            loading: false, //после окончания загрузки loading - false
-        }) // и в state записываем char
+            loading: false, 
+        }) 
     }
 
     onCharLoading = () => {
@@ -42,19 +42,19 @@ class RandomChar extends Component {
 
     updateChar = () => {
         let id = Math.floor((Math.random() * (1011400 - 1011000 + 1)) + 1011000);
-        this.onCharLoading(); //запускаем спиннер перед тем как пойдет запрос ниже
+        this.onCharLoading(); 
         this.marvelService
-            .getCharacter(id) //возвращается малый объект
-            .then(this.onCharLoaded) //загрузка завершена  - запуск функции onCharLoaded
-            .catch(this.onError) //ошибка - запуск ф-ции onError
+            .getCharacter(id) 
+            .then(this.onCharLoaded) 
+            .catch(this.onError) 
     }
 
     render() {
-        const {char, loading, error} = this.state; //деструктуризация из state
-        //Создание переменных для условного рендеринга
-        const errorMessage = error ? <ErrorMessage/> : null; //если error - true то рендерим ErrorMessage
-        const spinner = loading ? <Spinner/> : null; //если loading - true то рендерим Spinner
-        const content = !(loading || error) ? <View char={char}/> : null; //Если нет loading или нет error то грузим контент
+        const {char, loading, error} = this.state; 
+        
+        const errorMessage = error ? <ErrorMessage/> : null; 
+        const spinner = loading ? <Spinner/> : null; 
+        const content = !(loading || error) ? <View char={char}/> : null; 
 
         return (
             <div className="randomchar">
@@ -81,7 +81,7 @@ class RandomChar extends Component {
 
 
 
-const View = ({char}) => { //рендерящий компонент
+const View = ({char}) => { 
     const {thumbnail, description, name, homepage, wiki} = char;
     let objectFit;
     thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? objectFit = 'contain' : objectFit = 'unset';

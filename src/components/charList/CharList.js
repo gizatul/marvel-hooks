@@ -11,36 +11,36 @@ class CharList extends Component {
         charList: [],
         loading: true,
         error: false,
-        newItemLoading: false, //будет вызываться вручную после вызова onRequest
-        offset: 1247, //св-во отступа сервиса
+        newItemLoading: false, 
+        offset: 1247, 
         charEnded: false,
     }
     
     marvelService = new MarvelService();
 
     componentDidMount() {
-        this.onRequest(); //2. вызываем onRequest первый раз без аргумента, чтобы получить baseOffset по умол(1247)
+        this.onRequest(); 
     }
 
-    onRequest = (offset) => { //1. метод запроса на сервер для получения карточек с персонажами
-        this.onCharListLoading(); //3.переключает newItemLoading в true (используем для переключения кнопки load More в disabled)
+    onRequest = (offset) => { 
+        this.onCharListLoading(); 
         this.marvelService.getAllCharacters(offset)
-            .then(this.onCharListLoaded) //4. запускается onCharListLoaded кот-й получает новые данные (newCharList)
+            .then(this.onCharListLoaded) 
             .catch(this.onError)
     }
 
-    onCharListLoaded = (newCharList) => { //5. получает новые данные
-        let ended = false; //тех переменная для определения закончились ли персонажи
-        if (newCharList.length < 9) { //если в приходящем массиве персонажей меньше 9, то ended true
+    onCharListLoaded = (newCharList) => { 
+        let ended = false; 
+        if (newCharList.length < 9) { 
             ended = true;
         }
 
         this.setState(({offset, charList}) => ({ 
-                charList: [...charList, ...newCharList], //6. из новых данных получаем новое состояние //когда запускаем первый раз, то в charList пустой массив // с каждым последующим запуском элементы будут добавляться
+                charList: [...charList, ...newCharList], 
                 loading: false,
                 newItemLoading: false,
-                offset: offset + 9, //после каждой успешной загрузки будем добавлять еще 9 к текущему state
-                charEnded: ended, //передаем значение ended
+                offset: offset + 9, 
+                charEnded: ended, 
         }))
     }
 
@@ -57,23 +57,21 @@ class CharList extends Component {
         })
     }
 
-    //Реализация фокуса с рефами
-    itemRefs = []; //1. Создание массива с рефами
+    
+    itemRefs = []; 
 
-    setRef = (ref) => { //2. Ф-я кот-я принимает аргумент и формирует массив
+    setRef = (ref) => { 
         this.itemRefs.push(ref); 
     }
 
-    focusOnItem = (id) => { //4. добавление класса для конкретного элемента
+    focusOnItem = (id) => { 
         this.itemRefs.forEach(item => {
             item.classList.remove('char__item_selected')
         });
         this.itemRefs[id].classList.add('char__item_selected');
-        this.itemRefs[id].focus(); //установка именно "фокуса" на элементе, когда следующее введение символов идет именно в нем. Это особенно важно на всяких мобильных устройствах для удобности.
+        this.itemRefs[id].focus(); 
     }
 
-    // Этот метод создан для оптимизации, 
-    // чтобы не помещать такую конструкцию в метод render
     renderItems(arr) {
         const items =  arr.map((item, i) => {
             let objectFit;
@@ -84,24 +82,23 @@ class CharList extends Component {
                     tabIndex='0'
                     className="char__item"
                     key={item.id}
-                    ref={this.setRef} //5.формирование массива из ref-ов
+                    ref={this.setRef} 
                     onClick={() => {
-                        this.props.onCharSelected(item.id); ///*по клику через пропсы получаем метод onCharSelected из App.js, который мы приняли //внутрь помещаем наш id элемента по которому кликаем*/
-                        this.focusOnItem(i); //6. подсвечивание карточки по клику
+                        this.props.onCharSelected(item.id); 
+                        this.focusOnItem(i); 
                     }}
                     onKeyPress={(e) => {
                         if (e.key === ' ' || e.key === "Enter") {
                             this.props.onCharSelected(item.id);
-                            this.focusOnItem(i); //подсвечивание по нажатию на пробел или Enter
+                            this.focusOnItem(i); 
                         }
                     }}>
-                    
                         <img src={item.thumbnail} alt={item.name} style={{objectFit: objectFit}}/>
                         <div className="char__name">{item.name}</div>
                 </li>
             )
         });
-        // А эта конструкция вынесена для центровки спиннера/ошибки
+        
         return (
             <ul className="char__grid">
                 {items}

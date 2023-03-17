@@ -1,8 +1,8 @@
 import { Component } from "react";
 import ErrorMessage from "../errorMessage/errorMessage";
-//Предохранитель - компонент ловящий ошибку
+
 class ErrorBoundary extends Component {
-  state = { //state с error false
+  state = { 
     error: false,
   }
 
@@ -12,6 +12,7 @@ class ErrorBoundary extends Component {
       error: true,
     })
   }
+  
   render() {
     if (this.state.error === true) {
       return (
