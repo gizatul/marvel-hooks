@@ -5,6 +5,7 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import decoration from '../../resources/img/vision.png';
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+import ComicsList from "../comicsList/ComicsList";
 
 const App = () => {
 
@@ -18,17 +19,20 @@ const App = () => {
         <div className="app">
             <AppHeader/>
             <main>
+                {/* <ErrorBoundary> */}
+                    {/* <RandomChar/> */}
+                {/* </ErrorBoundary> */}
+                {/* <div className="char__content"> */}
+                    {/* <ErrorBoundary> */}
+                        {/* <CharList onCharSelected={onCharSelected}/> */}
+                    {/* </ErrorBoundary> */}
+                    {/* <ErrorBoundary>  */}
+                        {/* <CharInfo charId={selectedChar}/> */}
+                    {/* </ErrorBoundary> */}
+                {/* </div> */}
                 <ErrorBoundary>
-                    <RandomChar/>
+                    <ComicsList/>
                 </ErrorBoundary>
-                <div className="char__content">
-                    <ErrorBoundary>
-                        <CharList onCharSelected={onCharSelected}/> {/*передача метода в CharList*/}
-                    </ErrorBoundary>
-                    <ErrorBoundary> {/*Оборачиваем компонент с ошибкой CharInfo в предохранитель ErrorBoundary*/}
-                        <CharInfo charId={selectedChar}/> {/*передача id в CharInfo*/}
-                    </ErrorBoundary>
-                </div>
                 <img className="bg-decoration" src={decoration} alt="vision"/>
             </main>
         </div>

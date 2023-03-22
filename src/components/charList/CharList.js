@@ -15,7 +15,7 @@ const CharList = (props) => {
     const {loading, error, getAllCharacters} = useMarvelService();
 
     useEffect(() => {
-        onRequest(offset, true); //A-я может быть ниже, тк d Реакте ф-я useEffect запускается после рендеринга
+        onRequest(offset, true); //Ф-я может быть ниже, тк d Реакте ф-я useEffect запускается после рендеринга 
     }, []) //при пустом массиве ф-я выполнится только 1 раз при создании компонента (имитация componentDidMount)
 
     const onRequest = (offset, initial) => {
