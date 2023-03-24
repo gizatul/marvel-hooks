@@ -8,7 +8,7 @@ const useMarvelService = () => {
     const _baseOffset = 1247;
 
     const getAllComics = async (offset = '0') => {
-        const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`);
+        const res = await request(`${_apiBase}comics?orderBy=issueNumber&limit=8&offset=${offset}&${_apiKey}`);
         return res.data.results.map(_transformComic); //сокращенный синтаксис map
     }
     
@@ -23,15 +23,16 @@ const useMarvelService = () => {
             id: comic.id,
             title: comic.title,
             thumbnail: comic.thumbnail.path + '.' + comic.thumbnail.extension,
-            price: comic.prices[0].price + '$',
-            description: comic.description,
-            lang: comic.textObjects[0].language,
-            pages: comic.pageCount,
+            price: comic.prices[0].price ? comic.prices[0].price + '$' : 'Not available',
+            description: comic.description || 'There is no description',
+            lang: comic.textObjects[0]?.language || 'en-us', //использование ?. чтобы не было ошибки если не существует //выбрасывает undefined
+            pages: comic.pageCount ? comic.pageCount + 'p.' : 'No information about the number of pages',
+            resourceURI: comic.resourceURI,
         }
     }
   
     const getAllCharacters = async (offset = _baseOffset) => { 
-        const res = await request(`${_apiBase}characters?orderBy=issueNumber&limit=9&offset=${offset}&${_apiKey}`);
+        const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
         return res.data.results.map(_transformCharacter); //аналог записи res.data.results.map(char => ._transformDataComics(char)) //внутрь map передается callback-ф-я которая содержится в ф-ии _transformCharacter
     }
 
