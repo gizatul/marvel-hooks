@@ -6,8 +6,9 @@ import Spinner from '../spinner/spinner';
 const Page404 = lazy(() => import("../pageNotFound/PageNotFound")); //компонент Page404 будет подгружен только когда появится на странице
 const MainPage = lazy(() => import('../pages/MainPage'));
 const ComicsPage = lazy(() => import('../pages/ComicsPage'));
-const SingleComicPage = lazy(() => import('../pages/SingleComicPage'));
-
+const SinglePage = lazy(() => import('../pages/SinglePage'));
+const SingleComicLayout = lazy(() => import('../pages/SingleComicLayout/SingleComicLayout'));
+const SingleCharLayout = lazy(() => import('../pages/SingleCharLayout/SingleCharLayout'));
 
 
 const App = () => {
@@ -21,8 +22,8 @@ const App = () => {
                         <Routes>
                             <Route element={<MainPage/>} path="/"/>
                             <Route element={<ComicsPage/>} path="/comics"/>
-                            <Route element={<SingleComicPage/>} path="/comics/:comicId"/> {/* ключ :comicId прописываем вручную для дальнейшего присвоения туда id*/}
-                            <Route path="*" element={<Page404 />} />
+                            <Route path="/characters/:id" element={<SinglePage Component={SingleCharLayout} dataType='character'/>} />
+                            <Route path="/comics/:id" element={<SinglePage Component={SingleComicLayout} dataType='comic'/>} />                            <Route path="*" element={<Page404 />} />
                         </Routes>
                     </Suspense>
                 </main>

@@ -14,7 +14,6 @@ const useMarvelService = () => {
     
     const getComic = async (id = 32) => {
         const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
-        console.log(_transformComic(res.data.results[0]));
         return _transformComic(res.data.results[0]);
     }
 
@@ -36,6 +35,12 @@ const useMarvelService = () => {
         return res.data.results.map(_transformCharacter); //аналог записи res.data.results.map(char => ._transformDataComics(char)) //внутрь map передается callback-ф-я которая содержится в ф-ии _transformCharacter
     }
 
+    const getCharacterByName = async (name) => {
+        const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
+        return res.data.results.map(_transformCharacter); //аналог записи res.data.results.map(char => ._transformDataComics(char)) //внутрь map передается callback-ф-я которая содержится в ф-ии _transformCharacter
+    }
+
+
     const getCharacter = async (id) => { 
         const res = await request(`${_apiBase}characters/${id}?${_apiKey}`); 
         return _transformCharacter(res.data.results[0]); 
@@ -46,12 +51,13 @@ const useMarvelService = () => {
             id: char.id,
             name: char.name,
             description: char.description.length > 180  ? `${char.description.slice(0, 180)}...` : char.description.length <= 0 ? 'There is not description' : char.description,
+            fullDescription: char.description ? char.description : 'There is not description' ,
             homepage: char.urls[0].url,
             wiki: char.urls[1].url,
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             comics: char.comics.items,
         } 
     }
-    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComic}
+    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComic, getCharacterByName}
 }
 export default useMarvelService;

@@ -1,46 +1,67 @@
 import './charSearch.scss';
 import '../../style/button.scss';
-import { Formik } from 'formik';
+import { Formik, Form, Field, ErrorMessage as FormikErrorMessage } from 'formik';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import useMarvelService from '../../services/MarvelService';
+import ErrorMessage from '../errorMessage/errorMessage';
+import * as Yup from 'yup';
 
 const CharSearch = () => {
+
+    const [char, setChar] = useState(null);
+    const {loading, error, getCharacterByName, clearError} = useMarvelService();
+
+    const onCharLoaded = (char) => {
+        setChar(char)
+    }
+
+    const updateChar = (name) => {
+        clearError();
+        getCharacterByName(name)
+            .then(onCharLoaded)
+    }
+    
+    const errorMessage = error ? <ErrorMessage/> : null;
+    const results = !char ? null : char.length > 0 ?
+        <div className='char__search-panel'>
+            <div className='char__search-success'>There is! Visit {char[0].name} page?</div>
+            <Link to={`/characters/${char[0].id}`} className='button button__secondary'>
+                <div className='inner'>TO PAGE</div>
+            </Link>
+        </div> : 
+        <div className='char__search-error'>The character was not found. Check the name and try again</div>;
+
     return (
         <div className='char__search'>
-            <div className='char__search-title'>Or find a character by name:</div>
             <Formik
                 initialValues={{
                     search: '',
                 }} 
-                validate = {values => {
-                    const errors = {};
-                    if (!values.search) {
-                        errors.search = "This field is required"
-                    }
-                    return errors;
+                validationSchema = {Yup.object({
+                    search: Yup.string().required('This field is required'),
+                })}
+                onSubmit = {({search}) => {
+                    updateChar(search);
                 }}
-                onSubmit = {values => console.log(JSON.stringify(values, null, 2))}>
-                {({
-                    values,
-                    errors,
-                    handleSubmit,
-                    handleChange,
-                }) => (
-                    <form onSubmit={handleSubmit}>
-                        <div className='char__search-panel'>
-                            <input 
-                                id="search" 
-                                name="search" 
-                                type='text' 
-                                placeholder="Enter name" 
-                                value={values.search}
-                                onChange={handleChange}/>
-                            <button className='button button__main'>
-                                <div className="inner">FIND</div>
-                            </button>
-                        </div>
-                        {errors.search ? <div className='char__search-error'>{errors.search}</div> : null}
-                    </form>
-                )}
+            >
+                <Form onChange={e => !e.target.value ? setChar(null) : null}>
+                    <label className='char__search-title'>Or find a character by name:</label>
+                    <div className='char__search-panel'>
+                        <Field 
+                            id="search" 
+                            name="search" 
+                            type='text' 
+                            placeholder="Enter name"/>
+                        <button className='button button__main'>
+                            <div className="inner" disabled={loading}>FIND</div>
+                        </button>
+                    </div>
+                    <FormikErrorMessage component='div' name='search' className='char__search-error'/> 
+                </Form>
             </Formik>
+            {errorMessage}
+            {results}
         </div>
     )
 }
