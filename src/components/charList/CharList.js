@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
@@ -31,7 +31,7 @@ const CharList = (props) => {
     const {getAllCharacters, process, setProcess} = useMarvelService();
 
     useEffect(() => {
-        onRequest(offset, true); //Ф-я может быть ниже, тк d Реакте ф-я useEffect запускается после рендеринга 
+        onRequest(offset, true); //Ф-я может быть ниже, тк в Реакте ф-я useEffect запускается после рендеринга 
     }, []) //при пустом массиве ф-я выполнится только 1 раз при создании компонента (имитация componentDidMount)
 
     const onRequest = (offset, initial) => {
@@ -100,9 +100,13 @@ const CharList = (props) => {
         )
     }
 
+    const elements = useMemo(() => {
+        return setContent(process, () => renderItems(charList), newItemLoading) // eslint-disable-next-line
+    }, [process])
+
     return (
         <div className="char__list">
-            {setContent(process, () => renderItems(charList), newItemLoading)}
+            {elements}
             <button className="button button__main button__long"
                     disabled={newItemLoading}
                     onClick={() => onRequest(offset)}
