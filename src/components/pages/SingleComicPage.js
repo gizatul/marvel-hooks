@@ -6,7 +6,7 @@ import ErrorMessage from '../errorMessage/errorMessage';
 import { useParams, Link } from 'react-router-dom';
 
 const SingleComicPage = () => {
-    const {comicId} = useParams(); //используем для связывания адреса страницы с нужным комиксом
+    const {comicId} = useParams(); 
     const [comic, setComic] = useState(null);
     const {loading, error, getComic, clearError} = useMarvelService();
 

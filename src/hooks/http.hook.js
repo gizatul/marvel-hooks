@@ -18,11 +18,11 @@ export const useHttp = () => {
             return data;
         }   catch(error) {
             setProcess('error');
-            throw error; //выкидываем ошибку
+            throw error; 
         }
-    }, []) //usecallback используем, тк в дальнейшем возможно эту функцию будем размещать внутрь дочерних компонентов и не нужно вызывать лишних запросов - т.е. мемоизируем
+    }, []) 
     const clearError = useCallback(() => {
         setProcess('loading');
-    }, []); //Ф-я для очистки ошибки
+    }, []); 
     return { request,  clearError, process, setProcess};
 }

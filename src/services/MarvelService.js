@@ -1,7 +1,7 @@
 import { useHttp } from "../hooks/http.hook";
 
 const useMarvelService = () => {
-    const {request, clearError, process, setProcess} = useHttp(); //деструктуризация возвращаемого объекта из useHttp
+    const {request, clearError, process, setProcess} = useHttp();
 
     const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
     const _apiKey = 'apikey=cb9119d84ffeb91c59dc6c6080764863';
@@ -9,7 +9,7 @@ const useMarvelService = () => {
 
     const getAllComics = async (offset = '0') => {
         const res = await request(`${_apiBase}comics?orderBy=issueNumber&limit=8&offset=${offset}&${_apiKey}`);
-        return res.data.results.map(_transformComic); //сокращенный синтаксис map
+        return res.data.results.map(_transformComic);
     }
     
     const getComic = async (id = 32) => {
@@ -24,7 +24,7 @@ const useMarvelService = () => {
             thumbnail: comic.thumbnail.path + '.' + comic.thumbnail.extension,
             price: comic.prices[0].price ? comic.prices[0].price + '$' : 'Not available',
             description: comic.description || 'There is no description',
-            lang: comic.textObjects[0]?.language || 'en-us', //использование ?. чтобы не было ошибки если не существует //выбрасывает undefined
+            lang: comic.textObjects[0]?.language || 'en-us',
             pages: comic.pageCount ? comic.pageCount + 'p.' : 'No information about the number of pages',
             resourceURI: comic.resourceURI,
         }
@@ -32,12 +32,12 @@ const useMarvelService = () => {
   
     const getAllCharacters = async (offset = _baseOffset) => { 
         const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
-        return res.data.results.map(_transformCharacter); //аналог записи res.data.results.map(char => ._transformDataComics(char)) //внутрь map передается callback-ф-я которая содержится в ф-ии _transformCharacter
+        return res.data.results.map(_transformCharacter); 
     }
 
     const getCharacterByName = async (name) => {
         const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
-        return res.data.results.map(_transformCharacter); //аналог записи res.data.results.map(char => ._transformDataComics(char)) //внутрь map передается callback-ф-я которая содержится в ф-ии _transformCharacter
+        return res.data.results.map(_transformCharacter);
     }
 
 

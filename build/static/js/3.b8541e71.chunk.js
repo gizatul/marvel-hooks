@@ -1,2 +1,0 @@
-(this.webpackJsonpmarvel=this.webpackJsonpmarvel||[]).push([[3],{47:function(n,o,e){"use strict";function c(){console.log("hi")}function t(){console.log("secondLogger")}e.r(o),e.d(o,"default",(function(){return c})),e.d(o,"secondLogger",(function(){return t}))}}]);
-//# sourceMappingURL=3.b8541e71.chunk.js.map

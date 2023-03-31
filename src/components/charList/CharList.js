@@ -31,8 +31,8 @@ const CharList = (props) => {
     const {getAllCharacters, process, setProcess} = useMarvelService();
 
     useEffect(() => {
-        onRequest(offset, true); //Ф-я может быть ниже, тк в Реакте ф-я useEffect запускается после рендеринга 
-    }, []) //при пустом массиве ф-я выполнится только 1 раз при создании компонента (имитация componentDidMount)
+        onRequest(offset, true); // eslint-disable-next-line
+    }, []) 
 
     const onRequest = (offset, initial) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
@@ -53,10 +53,10 @@ const CharList = (props) => {
         setCharEnded(charEnded => ended);
     }
 
-    const itemRefs = useRef([]); //useRef можно использовать только верхнеуровне (нельзя помещать в циклы, ф-ции) 
+    const itemRefs = useRef([]); 
 
     const focusOnItem = (id) => { 
-        itemRefs.current.forEach(item => { // при функциональном подходе нужно добавлять current
+        itemRefs.current.forEach(item => { 
             item.classList.remove('char__item_selected')
         });
         itemRefs.current[id].classList.add('char__item_selected');

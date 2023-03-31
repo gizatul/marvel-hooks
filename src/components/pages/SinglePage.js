@@ -6,7 +6,7 @@ import AppBanner from '../appBanner/AppBanner';
 import setContent from '../../utils/setContent';
 
 const SinglePage = ({Component, dataType}) => {
-    const {id} = useParams(); //используем для связывания адреса страницы с нужным комиксом
+    const {id} = useParams(); 
     const [data, setData] = useState(null);
     const {getComic, clearError, getCharacter, process, setProcess} = useMarvelService();
 
